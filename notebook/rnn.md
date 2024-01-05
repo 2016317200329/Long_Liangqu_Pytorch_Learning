@@ -6,9 +6,9 @@
    
    - 引入batch后，会变成(b,5,100)或者(5,b,100)
 
-2. 对于RNN，一般一次会input一帧进去，也就是一个单词的意思，
+2. 对于RNN，一般一次会input**一帧进去**，也就是一个单词的意思，
    
-   - 所以一次input的大小一般是(b,100)
+   - 所以一次input的大小一般写作是(5,b,100)
 
 # 2. RNN原理
 
@@ -53,3 +53,8 @@
 # 3. RNN Layer
 
 1. <img src="file:///C:/Users/Wang%20Yujia/AppData/Roaming/marktext/images/2022-10-03-18-56-04-image.png" title="" alt="" width="630">
+## 3.2 多层的输出是什么
+1. `h`是**最后一个timestamp上所有memeory**的状态，`out`是**最后一个timestamp上最后一个memory**的输出
+![](https://gitee.com/wyjyoga/my-pic-go/raw/master/img/20230706094321.png)
+
+2. 
