@@ -2,7 +2,7 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 
-# wyj: resnet已经属于一个“中型"网络
+# wyj: resnet已经属于一个“中型"网络, train 1-2天是可以接收的
 class ResBlk(nn.Module):
     """
     resnet block
@@ -56,7 +56,7 @@ class ResNet(nn.Module):
         self.blk3 = ResBlk(256,512,2)
         self.blk4 = ResBlk(512,512,2)     # wyj: 经验之谈，一般不会上到1024。另外随着channel增大，当feature map降到2*2或者4*4时效果比较好
 
-        self.flatten = nn.Flatten()
+        self.flatten = nn.Flatten()   # wyj: start_dim=1
         self.outlayer = nn.Linear(512,10)
 
     def forward(self,x):
@@ -68,11 +68,10 @@ class ResNet(nn.Module):
         x = self.blk4(x)
         print(f"after blk4: {x.shape}")
 
-        print()
         #[b,512,h,w]=>[b,512,1,1]
-        # wyj: adaptive表示不管多少都可以变成[1,1]的
+        # wyj: adaptive表示不管[h,w]多少都可以变成[1,1]的
         x =  F.adaptive_avg_pool2d(x, [1, 1])
-        x = self.flatten(x)
+        x = torch.flatten(x)
         x = self.outlayer(x)
 
         return x
